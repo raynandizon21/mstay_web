@@ -1,0 +1,6 @@
+{
+  "name": "Clark Central Hotel - 5-Star Luxury Metropolitan Hotel",
+  "description": "Experience an artful expression of 5-star metropolitan luxury, curated suites, signature dining, and bespoke wellness at Clark Central Hotel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
