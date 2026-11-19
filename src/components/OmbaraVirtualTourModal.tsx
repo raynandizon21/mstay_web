@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import { STORY_SLIDES } from '../data/ombaraData.ts';
 import { OmbaraLogo } from './OmbaraLogo.tsx';
+import { useSwipe } from '../hooks/useSwipe.ts';
 
 interface OmbaraVirtualTourModalProps {
   isOpen: boolean;
@@ -19,6 +20,8 @@ export const OmbaraVirtualTourModal: React.FC<OmbaraVirtualTourModalProps> = ({ 
   const goTo = useCallback((i: number) => setCurrentIndex(((i % total) + total) % total), [total]);
   const handleNext = useCallback(() => setCurrentIndex((p) => (p + 1) % total), [total]);
   const handlePrev = useCallback(() => setCurrentIndex((p) => (p - 1 + total) % total), [total]);
+
+  const swipe = useSwipe(handleNext, handlePrev);
 
   // Auto-advance; restarts on every slide change so manual jumps get a full interval
   useEffect(() => {
@@ -87,7 +90,7 @@ export const OmbaraVirtualTourModal: React.FC<OmbaraVirtualTourModalProps> = ({ 
       </div>
 
       {/* Stage */}
-      <div className="relative z-10 flex-1 min-h-0 flex items-center">
+      <div className="relative z-10 flex-1 min-h-0 flex items-center" {...swipe}>
         <div className="w-full max-w-7xl mx-auto px-5 sm:px-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
           {/* Frameless photo: hairline edge so it melts into the background */}
           <div
@@ -159,7 +162,7 @@ export const OmbaraVirtualTourModal: React.FC<OmbaraVirtualTourModalProps> = ({ 
       </div>
 
       {/* Filmstrip */}
-      <div className="relative z-10 pb-6 sm:pb-8 pt-4">
+      <div className="relative z-10 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:pb-8 pt-4">
         <div className="max-w-7xl mx-auto px-5 sm:px-10">
           <div className="flex gap-2.5 overflow-x-auto no-scrollbar justify-start lg:justify-center">
             {STORY_SLIDES.map((s, idx) => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { OmbaraHeader } from './components/OmbaraHeader.tsx';
 import { OmbaraHero } from './components/OmbaraHero.tsx';
 import { OmbaraRoomSearch } from './components/OmbaraRoomSearch.tsx';
@@ -10,12 +10,15 @@ import { OmbaraGallery } from './components/OmbaraGallery.tsx';
 import { OmbaraFooter } from './components/OmbaraFooter.tsx';
 import { OmbaraVirtualTourModal } from './components/OmbaraVirtualTourModal.tsx';
 import { OmbaraRegisterModal } from './components/OmbaraRegisterModal.tsx';
+import { IntroLoader } from './components/IntroLoader.tsx';
 import { ResidenceItem, ExperienceItem } from './data/ombaraData.ts';
 
 export default function App() {
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [virtualTourOpen, setVirtualTourOpen] = useState(false);
   const [_selectedResidence, setSelectedResidence] = useState<ResidenceItem | null>(null);
+  const [introDone, setIntroDone] = useState(false);
+  const handleIntroDone = useCallback(() => setIntroDone(true), []);
 
   const handleNavigate = (sectionId: string) => {
     const el = document.getElementById(sectionId);
@@ -35,6 +38,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-[#111111] flex flex-col font-sans selection:bg-[#111111] selection:text-white">
+      {/* 0. Opening logo animation (once per session) */}
+      <IntroLoader onDone={handleIntroDone} />
+
       {/* 1. Header with Transparent Hero Mode & Sticky Scrolled Mode */}
       <OmbaraHeader
         onOpenRegister={() => setRegisterModalOpen(true)}
@@ -45,6 +51,7 @@ export default function App() {
       <main className="flex-1">
         {/* 2. Hero Section (Screenshot 1) */}
         <OmbaraHero
+          ready={introDone}
           onRegisterClick={() => setRegisterModalOpen(true)}
           onExploreClick={() => handleNavigate('experience')}
         />

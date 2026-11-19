@@ -42,11 +42,11 @@ export const OmbaraFooter: React.FC<OmbaraFooterProps> = ({
           <div className="relative flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <div>
               <span className="eyebrow">Reservations</span>
-              <h2 className="font-serif-luxury text-4xl sm:text-6xl font-medium leading-[1] mt-5 max-w-2xl">
+              <h2 className="font-serif-luxury text-[44px] sm:text-6xl font-medium leading-[0.95] mt-5 max-w-2xl">
                 Your stay, <span className="font-script font-normal text-[#6B6B6B]">reimagined.</span>
               </h2>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col-reverse sm:flex-row sm:flex-wrap gap-3">
               <button
                 onClick={onOpenVirtualTour}
                 className="px-6 py-4 rounded-full border border-[#D9D9D9] text-sm font-medium hover:bg-[#F5F5F5] transition-colors cursor-pointer"
@@ -55,7 +55,7 @@ export const OmbaraFooter: React.FC<OmbaraFooterProps> = ({
               </button>
               <button
                 onClick={onOpenRegister}
-                className="group inline-flex items-center gap-3 pl-6 pr-2 py-2 rounded-full bg-[#111111] hover:bg-[#2B2B2B] text-white text-sm font-semibold transition-colors cursor-pointer"
+                className="group inline-flex items-center justify-between sm:justify-start gap-3 pl-6 pr-2 py-2 rounded-full bg-[#111111] hover:bg-[#2B2B2B] text-white text-sm font-semibold transition-colors cursor-pointer"
               >
                 Book Your Stay
                 <span className="w-9 h-9 rounded-full bg-white text-[#111111] flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
@@ -66,7 +66,7 @@ export const OmbaraFooter: React.FC<OmbaraFooterProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 pb-14 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-12 md:pb-14 border-b border-white/10">
           {/* Brand */}
           <div className="md:col-span-5 space-y-6">
             <OmbaraLogo size="lg" inverted={true} />
@@ -101,7 +101,7 @@ export const OmbaraFooter: React.FC<OmbaraFooterProps> = ({
             <span className="text-[11px] uppercase tracking-[0.22em] text-white/45 font-semibold block mb-5">
               Explore
             </span>
-            <ul className="space-y-3 text-sm text-white/75">
+            <ul className="grid grid-cols-2 md:grid-cols-1 gap-x-6 gap-y-3 text-sm text-white/75">
               {LINKS.map((link) => (
                 <li key={link.id + link.label}>
                   <button

@@ -82,7 +82,7 @@ const RoomCard: React.FC<{ room: ResidenceItem; onSelect?: (room: ResidenceItem)
 
       {/* Details */}
       <div className="px-4 sm:px-5 pt-6 pb-4 flex-1 flex flex-col">
-        <h3 className="font-serif-luxury text-2xl sm:text-[28px] font-medium">{room.title}</h3>
+        <h3 className="font-serif-luxury text-2xl sm:text-[28px] font-medium leading-tight">{room.title}</h3>
 
         {/* Bed & occupancy — one line */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-[#6B6B6B]">
@@ -100,7 +100,7 @@ const RoomCard: React.FC<{ room: ResidenceItem; onSelect?: (room: ResidenceItem)
         <p className="text-sm text-[#6B6B6B] leading-relaxed mt-4">{room.description}</p>
 
         {/* Key amenities */}
-        <ul className="grid grid-cols-3 gap-y-3 gap-x-2 mt-6 pt-5 border-t border-[#EDEDED]">
+        <ul className="grid grid-cols-2 min-[360px]:grid-cols-3 gap-y-3 gap-x-2 mt-6 pt-5 border-t border-[#EDEDED]">
           {KEY_AMENITIES.map(({ label, icon: Icon }) => (
             <li key={label} className="flex items-center gap-2 text-xs text-[#4D4D4D]">
               <Icon className="w-4 h-4 shrink-0 text-[#111111]" strokeWidth={1.5} />
@@ -109,9 +109,18 @@ const RoomCard: React.FC<{ room: ResidenceItem; onSelect?: (room: ResidenceItem)
           ))}
         </ul>
 
+        <button
+          onClick={() => setShowAll((v) => !v)}
+          aria-expanded={showAll}
+          className="self-start mt-4 inline-flex items-center gap-1 text-[13px] font-medium text-[#111111] underline-offset-4 hover:underline cursor-pointer"
+        >
+          {showAll ? 'Hide amenities' : 'All amenities'}
+          <ChevronDown className={`w-4 h-4 transition-transform ${showAll ? 'rotate-180' : ''}`} />
+        </button>
+
         {/* Full list, collapsed by default */}
         {showAll && (
-          <dl className="mt-5 space-y-3 text-xs leading-relaxed">
+          <dl className="mt-4 space-y-3 text-xs leading-relaxed">
             {room.amenities.map((group) => (
               <div key={group.label}>
                 <dt className="font-semibold uppercase tracking-[0.15em] text-[10px] text-[#6B6B6B]">{group.label}</dt>
@@ -121,15 +130,14 @@ const RoomCard: React.FC<{ room: ResidenceItem; onSelect?: (room: ResidenceItem)
           </dl>
         )}
 
-        <div className="mt-auto pt-6 flex items-center justify-between gap-4">
-          <button
-            onClick={() => setShowAll((v) => !v)}
-            aria-expanded={showAll}
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#111111] underline-offset-4 hover:underline cursor-pointer"
-          >
-            {showAll ? 'Hide amenities' : 'All amenities'}
-            <ChevronDown className={`w-4 h-4 transition-transform ${showAll ? 'rotate-180' : ''}`} />
-          </button>
+        <div className="mt-auto pt-6 flex items-end justify-between gap-4">
+          <div>
+            <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-[#A3A3A3]">From</span>
+            <span className="font-serif-luxury text-[26px] font-medium tabular-nums leading-none">
+              ₱{room.pricePerNight.toLocaleString('en-US')}
+            </span>
+            <span className="text-xs text-[#6B6B6B]"> / night</span>
+          </div>
           <button
             onClick={() => onSelect?.(room)}
             className="group/btn inline-flex items-center gap-2 pl-5 pr-1.5 py-1.5 rounded-full bg-[#111111] hover:bg-[#2B2B2B] text-white text-sm font-semibold transition-colors cursor-pointer"
@@ -147,12 +155,12 @@ const RoomCard: React.FC<{ room: ResidenceItem; onSelect?: (room: ResidenceItem)
 
 export const OmbaraResidences: React.FC<OmbaraResidencesProps> = ({ onSelectResidence }) => {
   return (
-    <section id="rooms" className="py-24 sm:py-32 bg-white text-[#111111] relative" aria-label="Main Stay Rooms">
+    <section id="rooms" className="py-20 sm:py-32 bg-white text-[#111111] relative" aria-label="Main Stay Rooms">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14 sm:mb-16">
           <div className="lg:col-span-7">
             <span className="eyebrow">04 · Rooms & Suites</span>
-            <h2 className="font-serif-luxury text-4xl sm:text-6xl font-medium leading-[1] mt-5">
+            <h2 className="font-serif-luxury text-[44px] sm:text-6xl font-medium leading-[0.95] mt-5">
               Luxurious <span className="font-script font-normal text-[#6B6B6B]">stays</span>
             </h2>
           </div>

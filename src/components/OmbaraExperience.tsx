@@ -68,13 +68,13 @@ const HIGHLIGHTS: Highlight[] = [
 
 export const OmbaraExperience: React.FC<OmbaraExperienceProps> = () => {
   return (
-    <section id="experience" className="py-24 sm:py-32 bg-white text-[#111111] relative" aria-label="About M Stay Hotel">
+    <section id="experience" className="py-20 sm:py-32 bg-white text-[#111111] relative" aria-label="About M Stay Hotel">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Section header */}
         <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14 sm:mb-16">
           <div className="lg:col-span-7">
             <span className="eyebrow">01 · About</span>
-            <h2 className="font-serif-luxury text-4xl sm:text-6xl font-medium leading-[1] mt-5">
+            <h2 className="font-serif-luxury text-[44px] sm:text-6xl font-medium leading-[0.95] mt-5">
               Why stay at <span className="font-script font-normal text-[#6B6B6B]">M Stay</span>
             </h2>
           </div>
@@ -92,7 +92,7 @@ export const OmbaraExperience: React.FC<OmbaraExperienceProps> = () => {
             return (
               <>
                 <Reveal className="lg:col-span-5">
-                  <article className="group relative h-full min-h-[460px] rounded-3xl overflow-hidden bg-[#111111] text-white flex flex-col p-7 sm:p-8">
+                  <article className="group relative h-full min-h-[420px] sm:min-h-[460px] rounded-3xl overflow-hidden bg-[#111111] text-white flex flex-col p-7 sm:p-8">
                     {feature.image && (
                       <img
                         src={feature.image}
@@ -126,8 +126,8 @@ export const OmbaraExperience: React.FC<OmbaraExperienceProps> = () => {
                     const Icon = item.icon;
                     return (
                       <Reveal as="li" key={item.title} delay={i * 100} className="border-b border-[#E6E6E6]">
-                        <div className="group grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-x-6 gap-y-4 py-5 sm:py-6 items-center">
-                          <div>
+                        <div className="group grid grid-cols-[1fr_88px] sm:grid-cols-[1fr_auto] gap-x-4 sm:gap-x-6 py-5 sm:py-6 items-start sm:items-center">
+                          <div className="min-w-0">
                             <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#6B6B6B]">
                               <Icon className="w-3.5 h-3.5" strokeWidth={1.75} />
                               {item.tag}
@@ -137,7 +137,7 @@ export const OmbaraExperience: React.FC<OmbaraExperienceProps> = () => {
                             </h3>
                             <p className="text-[13px] text-[#6B6B6B] leading-relaxed mt-1.5 max-w-sm">{item.description}</p>
                           </div>
-                          <div className="w-full sm:w-56 lg:w-60 aspect-[16/10] rounded-2xl overflow-hidden bg-[#F5F5F5] flex items-center justify-center">
+                          <div className="w-[88px] sm:w-56 lg:w-60 aspect-square sm:aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden bg-[#F5F5F5] flex items-center justify-center">
                             {item.image ? (
                               <img
                                 src={item.image}
@@ -160,15 +160,15 @@ export const OmbaraExperience: React.FC<OmbaraExperienceProps> = () => {
         </div>
 
         {/* Stats strip */}
-        <Reveal className="mt-20 sm:mt-24 grid grid-cols-2 lg:grid-cols-4 border-y border-[#E6E6E6]">
+        <Reveal className="mt-14 sm:mt-24 grid grid-cols-2 lg:grid-cols-4 border-y border-[#E6E6E6]">
           {STATS.map((stat, idx) => (
             <div
               key={stat.label}
-              className={`py-8 sm:py-10 px-2 sm:px-8 ${idx % 2 === 1 ? 'pl-6 sm:pl-8 border-l border-[#E6E6E6]' : ''} ${
+              className={`py-7 sm:py-10 px-2 sm:px-8 ${idx % 2 === 1 ? 'pl-5 sm:pl-8 border-l border-[#E6E6E6]' : ''} ${
                 idx === 2 ? 'lg:border-l border-t lg:border-t-0 border-[#E6E6E6]' : ''
               } ${idx === 3 ? 'border-t lg:border-t-0' : ''}`}
             >
-              <div className="font-serif-luxury text-4xl sm:text-5xl font-medium">{stat.value}</div>
+              <div className="font-serif-luxury text-[34px] sm:text-5xl font-medium leading-none">{stat.value}</div>
               <div className="text-sm text-[#6B6B6B] mt-2">{stat.label}</div>
             </div>
           ))}

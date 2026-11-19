@@ -16,6 +16,7 @@ import {
   Wifi,
 } from 'lucide-react';
 import { ROOM_RATE_PERKS, ResidenceItem } from '../data/ombaraData.ts';
+import { useSwipe } from '../hooks/useSwipe.ts';
 
 export interface Stay {
   checkIn: string; // yyyy-mm-dd
@@ -52,6 +53,10 @@ export const RoomResultCard: React.FC<{ room: ResidenceItem; stay: Stay; onBook:
   const [paused, setPaused] = useState(false);
   const count = room.images.length;
   const go = (i: number) => setActive((i + count) % count);
+  const swipe = useSwipe(
+    () => setActive((a) => (a + 1) % count),
+    () => setActive((a) => (a - 1 + count) % count),
+  );
 
   // Restart on every slide change so manual clicks get a full interval too
   useEffect(() => {
@@ -74,6 +79,7 @@ export const RoomResultCard: React.FC<{ room: ResidenceItem; stay: Stay; onBook:
         className="relative aspect-video md:aspect-auto md:min-h-[220px] rounded-[18px] overflow-hidden bg-[#EDEDED]"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
+        {...swipe}
       >
         {room.images.map((img, idx) => (
           <img
@@ -97,14 +103,14 @@ export const RoomResultCard: React.FC<{ room: ResidenceItem; stay: Stay; onBook:
             <button
               onClick={() => go(active - 1)}
               aria-label="Previous photo"
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 hover:bg-white transition-all duration-300 cursor-pointer"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center lg:opacity-0 lg:-translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 hover:bg-white transition-all duration-300 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => go(active + 1)}
               aria-label="Next photo"
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 hover:bg-white transition-all duration-300 cursor-pointer"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center lg:opacity-0 lg:translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 hover:bg-white transition-all duration-300 cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -134,7 +140,7 @@ export const RoomResultCard: React.FC<{ room: ResidenceItem; stay: Stay; onBook:
       </div>
 
       {/* Details */}
-      <div className="px-4 lg:px-6 py-4 lg:py-5 flex flex-col">
+      <div className="px-2.5 sm:px-4 lg:px-6 py-4 lg:py-5 flex flex-col min-w-0">
         <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#A3A3A3]">
           {room.label} · Studio type
         </span>
@@ -157,9 +163,9 @@ export const RoomResultCard: React.FC<{ room: ResidenceItem; stay: Stay; onBook:
             },
             { icon: Coffee, label: 'Breakfast', value: 'Included' },
           ].map(({ icon: Icon, label, value }) => (
-            <div key={label} className="px-3 sm:px-4 py-3">
-              <dt className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#A3A3A3]">
-                <Icon className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <div key={label} className="min-w-0 px-2.5 sm:px-4 py-3">
+              <dt className="flex items-center gap-1 sm:gap-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] sm:tracking-[0.15em] text-[#A3A3A3] min-w-0">
+                <Icon className="hidden min-[360px]:block w-3.5 h-3.5 shrink-0" strokeWidth={1.75} />
                 {label}
               </dt>
               <dd className="text-sm font-semibold text-[#111111] mt-1 truncate">{value}</dd>
@@ -170,7 +176,7 @@ export const RoomResultCard: React.FC<{ room: ResidenceItem; stay: Stay; onBook:
         {/* In-room amenities */}
         <div className="mt-auto pt-4">
           <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#A3A3A3]">In the room</span>
-          <ul className="grid grid-cols-3 gap-x-3 gap-y-2 mt-2.5">
+          <ul className="grid grid-cols-2 min-[360px]:grid-cols-3 gap-x-3 gap-y-2 mt-2.5">
             {AMENITY_ICONS.map(({ label, icon: Icon }) => (
               <li key={label} className="flex items-center gap-2 text-xs text-[#4D4D4D]">
                 <Icon className="w-3.5 h-3.5 shrink-0 text-[#111111]" strokeWidth={1.5} />

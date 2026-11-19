@@ -31,14 +31,17 @@ export const OmbaraRegisterModal: React.FC<OmbaraRegisterModalProps> = ({ isOpen
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-6"
       role="dialog"
       aria-modal="true"
       aria-label="How to reserve"
     >
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-xs animate-fade" onClick={onClose} />
 
-      <div className="relative z-10 w-full max-w-5xl max-h-[94vh] overflow-y-auto bg-white text-[#111111] rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10">
+      {/* Bottom sheet on phones, centred dialog from sm up */}
+      <div className="relative z-10 w-full max-w-5xl max-h-[92dvh] overflow-y-auto overscroll-contain bg-white text-[#111111] rounded-t-[28px] sm:rounded-3xl shadow-2xl px-5 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:p-8 lg:p-10 sheet-panel">
+        {/* Grab handle (visual cue on phones) */}
+        <div aria-hidden="true" className="sm:hidden mx-auto mb-4 h-1 w-10 rounded-full bg-[#D9D9D9]" />
         {/* Header */}
         <div className="flex items-start justify-between gap-6">
           <div>

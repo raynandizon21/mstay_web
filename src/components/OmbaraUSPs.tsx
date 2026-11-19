@@ -18,6 +18,7 @@ import {
   Waves,
 } from 'lucide-react';
 import { Reveal } from './Reveal.tsx';
+import { useSwipe } from '../hooks/useSwipe.ts';
 
 // Images live in src/assets/images/explore-clark/<NN-place>/ (see README.txt there).
 // Every image in a folder becomes its own slide (sorted A–Z); empty folders are skipped.
@@ -158,6 +159,7 @@ export const OmbaraUSPs: React.FC = () => {
   const railRef = useRef<HTMLDivElement>(null);
 
   const go = (dir: 1 | -1) => setActiveIndex((prev) => (prev + dir + total) % total);
+  const swipe = useSwipe(() => go(1), () => go(-1));
 
   // Slideshow: advance every SLIDE_DURATION; paused only while the big image is hovered
   useEffect(() => {
@@ -180,7 +182,7 @@ export const OmbaraUSPs: React.FC = () => {
   return (
     <section
       id="usps"
-      className="py-24 sm:py-32 bg-[#F5F5F5] text-[#111111] relative"
+      className="py-20 sm:py-32 bg-[#F5F5F5] text-[#111111] relative"
       aria-label="Explore Clark"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -188,7 +190,7 @@ export const OmbaraUSPs: React.FC = () => {
         <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end mb-12 sm:mb-14">
           <div className="lg:col-span-7">
             <span className="eyebrow">02 · Explore Clark</span>
-            <h2 className="font-serif-luxury text-4xl sm:text-6xl font-medium leading-[1] mt-5">
+            <h2 className="font-serif-luxury text-[44px] sm:text-6xl font-medium leading-[0.95] mt-5">
               Discover <span className="font-script font-normal text-[#6B6B6B]">Clark</span>
             </h2>
           </div>
@@ -218,6 +220,7 @@ export const OmbaraUSPs: React.FC = () => {
             className="rounded-[28px] bg-white/55 backdrop-blur-2xl backdrop-saturate-150 border border-white/60 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] p-3 grid grid-cols-1 lg:grid-cols-12 gap-3"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
+            {...swipe}
           >
             {/* Image with a tilted left cut whose edge fades out into the glass card (desktop) */}
             <div className="lg:col-span-8 lg:order-2 lg:-ml-8 lg:-my-3 lg:-mr-3 relative aspect-[16/10] lg:aspect-auto lg:min-h-[500px] rounded-2xl lg:rounded-l-none lg:rounded-r-[27px] overflow-hidden bg-[#EDEDED] lg:bg-transparent">
@@ -235,16 +238,16 @@ export const OmbaraUSPs: React.FC = () => {
               </div>
             </div>
 
-            <div className="lg:col-span-4 lg:order-1 flex flex-col p-5 sm:p-8 lg:py-10">
+            <div className="lg:col-span-4 lg:order-1 flex flex-col px-3 pt-4 pb-3 sm:p-8 lg:py-10">
               <div key={active.slideId} className="animate-rise flex flex-col h-full">
                 <span className="inline-flex items-center gap-2 self-start rounded-full bg-white/70 border border-white/80 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#111111]">
                   <active.icon className="w-3.5 h-3.5" />
                   {active.category}
                 </span>
-                <div className="mt-6 lg:mt-auto">
-                  <h3 className="font-serif-luxury text-3xl sm:text-4xl font-medium leading-[1.05]">{active.title}</h3>
-                  <p className="text-base text-[#6B6B6B] leading-relaxed mt-4">{active.description}</p>
-                  <p className="inline-flex items-center gap-1.5 text-sm text-[#6B6B6B] mt-6 pt-6 border-t border-black/10 w-full">
+                <div className="mt-4 sm:mt-6 lg:mt-auto">
+                  <h3 className="font-serif-luxury text-[28px] sm:text-4xl font-medium leading-[1.05]">{active.title}</h3>
+                  <p className="text-[15px] sm:text-base text-[#6B6B6B] leading-relaxed mt-3 sm:mt-4">{active.description}</p>
+                  <p className="inline-flex items-center gap-1.5 text-sm text-[#6B6B6B] mt-5 sm:mt-6 pt-5 sm:pt-6 border-t border-black/10 w-full">
                     <MapPin className="w-4 h-4" />
                     {active.location ?? 'Clark Freeport Zone · Pampanga'}
                   </p>
@@ -259,7 +262,7 @@ export const OmbaraUSPs: React.FC = () => {
           <button
             onClick={() => go(-1)}
             aria-label="Previous place"
-            className="shrink-0 p-1 text-[#6B6B6B] hover:text-[#111111] transition-colors cursor-pointer"
+            className="shrink-0 -ml-2 sm:ml-0 p-2 sm:p-1 text-[#6B6B6B] hover:text-[#111111] transition-colors cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5" strokeWidth={1.5} />
           </button>
@@ -304,7 +307,7 @@ export const OmbaraUSPs: React.FC = () => {
           <button
             onClick={() => go(1)}
             aria-label="Next place"
-            className="shrink-0 p-1 text-[#6B6B6B] hover:text-[#111111] transition-colors cursor-pointer"
+            className="shrink-0 -mr-2 sm:mr-0 p-2 sm:p-1 text-[#6B6B6B] hover:text-[#111111] transition-colors cursor-pointer"
           >
             <ChevronRight className="w-5 h-5" strokeWidth={1.5} />
           </button>

@@ -156,7 +156,8 @@ export const OmbaraRoomSearch: React.FC<OmbaraRoomSearchProps> = ({ onBook }) =>
   };
 
   const inputClass =
-    'bg-transparent text-sm font-semibold text-right tabular-nums outline-none cursor-pointer min-w-0 [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-calendar-picker-indicator]:cursor-pointer';
+    // 16px on phones: iOS Safari zooms the page when focusing inputs smaller than that
+    'bg-transparent text-base sm:text-sm font-semibold text-right tabular-nums outline-none cursor-pointer min-w-0 [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-calendar-picker-indicator]:cursor-pointer';
 
   const renderForm = (compact: boolean) => (
     <form
@@ -164,7 +165,7 @@ export const OmbaraRoomSearch: React.FC<OmbaraRoomSearchProps> = ({ onBook }) =>
       className={
         compact
           ? 'grid grid-cols-[1fr_1fr_auto_auto_auto] gap-1 items-center'
-          : 'mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto_auto_auto] gap-3'
+          : 'mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto_auto_auto] gap-2.5 sm:gap-3'
       }
     >
       <Field label="Check-in" compact={compact}>
@@ -217,10 +218,10 @@ export const OmbaraRoomSearch: React.FC<OmbaraRoomSearchProps> = ({ onBook }) =>
 
   return (
     <>
-    <section id="search" className="bg-[#F5F5F5] text-[#111111] py-14 sm:py-16" aria-label="Search rooms">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="rounded-3xl border border-[#E6E6E6] bg-white p-2.5">
-          <div className="rounded-[18px] bg-[#FAFAFA] px-5 sm:px-8 py-7 sm:py-8">
+    <section id="search" className="bg-[#F5F5F5] text-[#111111] py-10 sm:py-16" aria-label="Search rooms">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="rounded-3xl border border-[#E6E6E6] bg-white p-2 sm:p-2.5">
+          <div className="rounded-[18px] bg-[#FAFAFA] px-4 sm:px-8 py-6 sm:py-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <span className="eyebrow">Check availability</span>
@@ -260,7 +261,7 @@ export const OmbaraRoomSearch: React.FC<OmbaraRoomSearchProps> = ({ onBook }) =>
 
     {/* Floating dock: compact dark capsule (distinct from the white navbar) */}
     <div
-      className={`fixed bottom-4 sm:bottom-6 inset-x-0 z-40 px-4 flex justify-center transition-all duration-500 ease-out ${
+      className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] sm:bottom-6 inset-x-0 z-40 px-4 flex justify-center transition-all duration-500 ease-out ${
         floating ? 'translate-y-0 opacity-100' : 'translate-y-[150%] opacity-0 pointer-events-none'
       }`}
       aria-hidden={!floating}
