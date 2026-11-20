@@ -3,13 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Main Stay Hotel</title>
-    <meta name="description" content="Ombara — Luxury Hotel & Resort. Experience elevated living with thoughtfully designed residences, refined comfort, and exclusive resort-style amenities." />
-    <meta property="og:title" content="Ombara — Luxury Hotel & Resort" />
-    <meta property="og:description" content="Experience elevated living with thoughtfully designed residences, refined comfort, and exclusive resort-style amenities." />
+    <title>Main Stay Hotel · Clark Freeport Zone, Pampanga</title>
+    <meta name="description" content="A new studio hotel in Clark Freeport Zone, Pampanga — 101 spacious rooms, 10 minutes to Clark Airport, golf traveler services and Damso Korean restaurant." />
+
+    <!-- Link previews (Facebook, Messenger, KakaoTalk, Viber, X) -->
+    <!-- TODO: once the site has a domain, make og:image a full URL (e.g. https://your-domain.com/og-image.jpg) and add og:url — Facebook ignores relative image paths -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Main Stay Hotel" />
+    <meta property="og:title" content="Main Stay Hotel · Clark Freeport Zone, Pampanga" />
+    <meta property="og:description" content="101 spacious studio rooms inside Clark Freeport Zone — 10 minutes to Clark Airport, golf traveler services, Damso Korean restaurant and a Korean market on site." />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Main Stay Hotel building in Clark Freeport Zone" />
+    <meta property="og:locale" content="en_PH" />
     <meta name="twitter:card" content="summary_large_image" />
-    
+    <meta name="twitter:title" content="Main Stay Hotel · Clark Freeport Zone, Pampanga" />
+    <meta name="twitter:description" content="101 spacious studio rooms inside Clark Freeport Zone — 10 minutes to Clark Airport." />
+    <meta name="twitter:image" content="/og-image.jpg" />
+    <meta name="theme-color" content="#111111" />
+
     <!-- Google Fonts: Inter Tight (display) + Instrument Serif (italic accents) + Inter (body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,26 +41,26 @@
     <!-- Favicon: Main Stay Hotel logo -->
     <link rel="icon" type="image/png" href="/favicon.png">
 
-    <!-- Schema.org JSON-LD Structured Data for Ombara -->
+    <!-- Schema.org structured data (Google search / Maps). Keep in sync with HOTEL_INFO in src/data/ombaraData.ts -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Hotel",
-        "name": "Ombara Luxury Hotel & Resort",
-        "description": "Experience elevated living with thoughtfully designed residences, refined comfort, and exclusive resort-style amenities.",
-        "starRating": {
-          "@type": "Rating",
-          "ratingValue": "5"
-        },
-        "priceRange": "$$$$",
-        "telephone": "+62 (812) 3456-7890",
-        "email": "info@on3-step.com",
+        "name": "M Stay Hotel",
+        "alternateName": "Main Stay Hotel",
+        "description": "A new studio hotel inside Clark Freeport Zone, opened in 2022. 101 spacious studio rooms, golf traveler services, Damso Korean restaurant and a Korean market on the ground floor.",
+        "image": "/og-image.jpg",
+        "numberOfRooms": 101,
+        "priceRange": "₱4,300 – ₱4,700 per night",
+        "telephone": "+63454997837",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Coastal Horizon Boulevard, Mentawai Islands",
-          "addressLocality": "West Sumatra",
-          "addressCountry": "ID"
-        }
+          "streetAddress": "Clark Terrace Building, Lot 2 Block 1, The Villages, Prince Balagtas Avenue",
+          "addressLocality": "Clark Freeport Zone",
+          "addressRegion": "Pampanga",
+          "addressCountry": "PH"
+        },
+        "hasMap": "https://www.google.com/maps/search/?api=1&query=CLARK+M+STAY+HOTEL+Clark+Terrace+Building"
       }
     </script>
   </head>
