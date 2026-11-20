@@ -2,12 +2,14 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, ArrowRight, CalendarDays, Minus, Plus, Search } from 'lucide-react';
 import { RESIDENCES_DATA } from '../data/ombaraData.ts';
 import { RoomResultCard } from './RoomResultCard.tsx';
+import { DateField } from './DateField.tsx';
 
 interface OmbaraRoomSearchProps {
   onBook: () => void;
 }
 
 const DAY = 86_400_000;
+const MAX_NIGHTS = 30; // same cap as the Nights stepper
 
 // yyyy-mm-dd in local time (toISOString would shift to UTC)
 const toInput = (d: Date) => {
@@ -155,9 +157,15 @@ export const OmbaraRoomSearch: React.FC<OmbaraRoomSearchProps> = ({ onBook }) =>
     requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
 
-  const inputClass =
-    // 16px on phones: iOS Safari zooms the page when focusing inputs smaller than that
-    'bg-transparent text-base sm:text-sm font-semibold text-right tabular-nums outline-none cursor-pointer min-w-0 [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-calendar-picker-indicator]:cursor-pointer';
+  // Which calendar is open: inline bar ('in' / 'out') or floating capsule ('dock-in' / 'dock-out')
+  const [openField, setOpenField] = useState<'in' | 'out' | 'dock-in' | 'dock-out' | null>(null);
+  const toggle = (key: NonNullable<typeof openField>) => (open: boolean) =>
+    setOpenField((cur) => (open ? key : cur === key ? null : cur));
+  const checkInDisabled = [{ before: fromInput(today) }];
+  const checkOutDisabled = [
+    { before: fromInput(addDays(checkIn, 1)) },
+    { after: fromInput(addDays(checkIn, MAX_NIGHTS)) },
+  ];
 
   const renderForm = (compact: boolean) => (
     <form
@@ -168,26 +176,33 @@ export const OmbaraRoomSearch: React.FC<OmbaraRoomSearchProps> = ({ onBook }) =>
           : 'mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto_auto_auto] gap-2.5 sm:gap-3'
       }
     >
-      <Field label="Check-in" compact={compact}>
-        <input
-          type="date"
-          value={checkIn}
-          min={today}
-          onChange={(e) => handleCheckIn(e.target.value)}
-          className={inputClass}
-        />
-      </Field>
-      <Field label="Checkout" compact={compact}>
-        <input
-          type="date"
-          value={checkOut}
-          min={addDays(checkIn, 1)}
-          onChange={(e) => handleCheckOut(e.target.value)}
-          className={inputClass}
-        />
-      </Field>
+      <DateField
+        label="Check-in"
+        value={checkIn}
+        range={{ checkIn, checkOut }}
+        open={openField === 'in'}
+        onOpenChange={toggle('in')}
+        disabled={checkInDisabled}
+        onSelect={(iso) => {
+          handleCheckIn(iso);
+          setOpenField('out'); // go straight on to picking the checkout
+        }}
+      />
+      <DateField
+        label="Checkout"
+        align="right"
+        value={checkOut}
+        range={{ checkIn, checkOut }}
+        open={openField === 'out'}
+        onOpenChange={toggle('out')}
+        disabled={checkOutDisabled}
+        onSelect={(iso) => {
+          handleCheckOut(iso);
+          setOpenField(null);
+        }}
+      />
       <Field label="Nights" compact={compact}>
-        <Stepper value={nights} min={1} max={30} onChange={handleNights} label="nights" />
+        <Stepper value={nights} min={1} max={MAX_NIGHTS} onChange={handleNights} label="nights" />
       </Field>
       <Field label="Rooms" compact={compact}>
         <Stepper value={rooms} min={1} max={10} onChange={setRooms} label="rooms" />
@@ -273,37 +288,39 @@ export const OmbaraRoomSearch: React.FC<OmbaraRoomSearchProps> = ({ onBook }) =>
         {/* Dates: one segment, native picker hidden under the formatted text */}
         <div className="flex items-center gap-1 px-4">
           <CalendarDays className="w-4 h-4 text-white/50 mr-2" />
-          <label className="relative flex items-center gap-2 cursor-pointer rounded-full px-3 py-2 hover:bg-white/10 transition-colors">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">Check-in</span>
-            <span className="text-sm font-semibold tabular-nums whitespace-nowrap">{fmtShort(checkIn)}</span>
-            <input
-              type="date"
-              value={checkIn}
-              min={today}
-              onChange={(e) => handleCheckIn(e.target.value)}
-              onClick={(e) => e.currentTarget.showPicker?.()}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-              aria-label="Check-in date"
-            />
-          </label>
+          <DateField
+            variant="dark"
+            placement="top"
+            label="Check-in"
+            value={checkIn}
+            range={{ checkIn, checkOut }}
+            open={openField === 'dock-in'}
+            onOpenChange={toggle('dock-in')}
+            disabled={checkInDisabled}
+            onSelect={(iso) => {
+              handleCheckIn(iso);
+              setOpenField('dock-out');
+            }}
+          />
           <ArrowRight className="w-3.5 h-3.5 text-white/35" />
-          <label className="relative flex items-center gap-2 cursor-pointer rounded-full px-3 py-2 hover:bg-white/10 transition-colors">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">Checkout</span>
-            <span className="text-sm font-semibold tabular-nums whitespace-nowrap">{fmtShort(checkOut)}</span>
-            <input
-              type="date"
-              value={checkOut}
-              min={addDays(checkIn, 1)}
-              onChange={(e) => handleCheckOut(e.target.value)}
-              onClick={(e) => e.currentTarget.showPicker?.()}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-              aria-label="Checkout date"
-            />
-          </label>
+          <DateField
+            variant="dark"
+            placement="top"
+            label="Checkout"
+            value={checkOut}
+            range={{ checkIn, checkOut }}
+            open={openField === 'dock-out'}
+            onOpenChange={toggle('dock-out')}
+            disabled={checkOutDisabled}
+            onSelect={(iso) => {
+              handleCheckOut(iso);
+              setOpenField(null);
+            }}
+          />
         </div>
 
         <span className="w-px h-8 bg-white/15" />
-        <MiniStepper label="Nights" value={nights} min={1} max={30} onChange={handleNights} />
+        <MiniStepper label="Nights" value={nights} min={1} max={MAX_NIGHTS} onChange={handleNights} />
         <span className="w-px h-8 bg-white/15" />
         <MiniStepper label="Rooms" value={rooms} min={1} max={10} onChange={setRooms} />
 
