@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Play } from 'lucide-react';
 import { GALLERY_NARRATIVE_ITEMS } from '../data/ombaraData.ts';
 import { Reveal } from './Reveal.tsx';
@@ -8,20 +8,6 @@ interface OmbaraGalleryProps {
 }
 
 export const OmbaraGallery: React.FC<OmbaraGalleryProps> = ({ onOpenVirtualTour }) => {
-  const railRef = useRef<HTMLDivElement>(null);
-  const [current, setCurrent] = useState(0);
-  const total = GALLERY_NARRATIVE_ITEMS.length;
-
-  // Which card is closest to the left edge of the swipe rail
-  const handleScroll = () => {
-    const rail = railRef.current;
-    const first = rail?.children[0] as HTMLElement | undefined;
-    if (!rail || !first) return;
-    const step = first.offsetWidth + 16; // card width + gap-4
-    const atEnd = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 4;
-    setCurrent(atEnd ? total - 1 : Math.min(total - 1, Math.round(rail.scrollLeft / step)));
-  };
-
   return (
     <section
       id="gallery"
@@ -60,8 +46,6 @@ export const OmbaraGallery: React.FC<OmbaraGalleryProps> = ({ onOpenVirtualTour 
           {/* Right column: swipe carousel on phones/tablets, stacked story cards on desktop */}
           <div className="lg:col-span-7 min-w-0">
             <div
-              ref={railRef}
-              onScroll={handleScroll}
               className="-mx-6 px-6 sm:-mx-8 sm:px-8 lg:mx-0 lg:px-0 flex lg:flex-col gap-4 lg:gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory scroll-px-6 sm:scroll-px-8 no-scrollbar"
             >
               {GALLERY_NARRATIVE_ITEMS.map((item) => (
@@ -90,20 +74,6 @@ export const OmbaraGallery: React.FC<OmbaraGalleryProps> = ({ onOpenVirtualTour 
                   </div>
                 </Reveal>
               ))}
-            </div>
-
-            {/* Carousel position (phones/tablets only) */}
-            <div className="lg:hidden mt-6 flex items-center gap-4">
-              <span className="font-mono text-xs tabular-nums text-[#111111]">
-                {String(current + 1).padStart(2, '0')}
-              </span>
-              <div className="relative flex-1 h-px bg-[#D9D9D9]">
-                <span
-                  className="absolute inset-y-0 left-0 bg-[#111111] transition-[width] duration-300"
-                  style={{ width: `${((current + 1) / total) * 100}%` }}
-                />
-              </div>
-              <span className="font-mono text-xs tabular-nums text-[#A3A3A3]">{String(total).padStart(2, '0')}</span>
             </div>
           </div>
         </div>

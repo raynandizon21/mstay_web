@@ -157,7 +157,6 @@ export const OmbaraHeader: React.FC<OmbaraHeaderProps> = ({
                     }}
                     className="group w-full flex items-baseline gap-5 text-left py-4"
                   >
-                    <span className="font-mono text-[11px] text-white/35 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
                     <span className="font-serif-luxury text-[34px] leading-none font-medium tracking-tight transition-transform duration-300 group-active:translate-x-1">
                       {link.label}
                     </span>
