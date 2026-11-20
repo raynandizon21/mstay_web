@@ -44,7 +44,7 @@ export const OmbaraLocation: React.FC = () => {
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   allowFullScreen
-                  className="absolute inset-0 w-full h-full border-0 grayscale-[85%] contrast-[1.05]"
+                  className="absolute inset-0 w-full h-full border-0"
                 />
                 <a
                   href={HOTEL_INFO.mapsUrl}
