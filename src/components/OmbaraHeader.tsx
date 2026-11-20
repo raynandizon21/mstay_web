@@ -41,6 +41,7 @@ export const OmbaraHeader: React.FC<OmbaraHeaderProps> = ({
     { label: 'Facilities', id: 'facilities' },
     { label: 'Rooms', id: 'rooms' },
     { label: 'Gallery', id: 'gallery' },
+    { label: 'Location', id: 'location' },
     { label: 'Contact', id: 'contact' },
   ];
 

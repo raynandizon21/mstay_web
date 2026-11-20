@@ -7,6 +7,7 @@ import { OmbaraUSPs } from './components/OmbaraUSPs.tsx';
 import { OmbaraFacilities } from './components/OmbaraFacilities.tsx';
 import { OmbaraResidences } from './components/OmbaraResidences.tsx';
 import { OmbaraGallery } from './components/OmbaraGallery.tsx';
+import { OmbaraLocation } from './components/OmbaraLocation.tsx';
 import { OmbaraFooter } from './components/OmbaraFooter.tsx';
 import { OmbaraVirtualTourModal } from './components/OmbaraVirtualTourModal.tsx';
 import { OmbaraRegisterModal } from './components/OmbaraRegisterModal.tsx';
@@ -73,6 +74,9 @@ export default function App() {
 
         {/* 7. Gallery / Discover the Ombak Experience (Screenshots 7, 8, 9) */}
         <OmbaraGallery onOpenVirtualTour={() => setVirtualTourOpen(true)} />
+
+        {/* Location: map, address and travel times */}
+        <OmbaraLocation />
       </main>
 
       {/* 8. Footer */}

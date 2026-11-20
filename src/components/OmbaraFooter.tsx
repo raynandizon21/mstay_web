@@ -16,6 +16,7 @@ const LINKS = [
   { label: 'Facilities', id: 'facilities' },
   { label: 'Rooms & Suites', id: 'rooms' },
   { label: 'Gallery', id: 'gallery' },
+  { label: 'Location', id: 'location' },
 ];
 
 export const OmbaraFooter: React.FC<OmbaraFooterProps> = ({
