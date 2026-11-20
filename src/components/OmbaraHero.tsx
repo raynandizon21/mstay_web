@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { HERO_SLIDES, HeroSlide } from '../data/ombaraData.ts';
 import { useSwipe } from '../hooks/useSwipe.ts';
@@ -11,6 +11,10 @@ interface OmbaraHeroProps {
 }
 
 const SLIDE_DURATION = 6500; // 6.5s per slide
+
+// Background video served from /public/videos
+const HERO_VIDEO_SRC = `${import.meta.env.BASE_URL}videos/mstay-hero.mp4`;
+const HERO_VIDEO_POSTER = `${import.meta.env.BASE_URL}videos/mstay-hero-poster.jpg`;
 
 export const OmbaraHero: React.FC<OmbaraHeroProps> = ({ onRegisterClick, onExploreClick, ready = true }) => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -31,6 +35,31 @@ export const OmbaraHero: React.FC<OmbaraHeroProps> = ({ onRegisterClick, onExplo
 
   const swipe = useSwipe(handleNext, handlePrev);
 
+  // Background video: respect reduced-motion and make sure autoplay kicks in after hydration
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduceMotion(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (reduceMotion) {
+      video.pause();
+      return;
+    }
+    video.muted = true;
+    video.play().catch(() => {
+      /* autoplay blocked — poster stays visible */
+    });
+  }, [reduceMotion]);
+
   const currentSlide: HeroSlide = HERO_SLIDES[currentSlideIndex];
 
   // Last word of the headline gets the italic serif accent
@@ -44,25 +73,21 @@ export const OmbaraHero: React.FC<OmbaraHeroProps> = ({ onRegisterClick, onExplo
       aria-label="Main Stay Hotel"
       {...swipe}
     >
-      {/* Background slides */}
-      {HERO_SLIDES.map((slide, idx) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-[1400ms] ease-in-out ${
-            idx === currentSlideIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
-          }`}
-        >
-          <img
-            key={idx === currentSlideIndex ? `active-${currentSlideIndex}` : slide.id}
-            src={slide.image}
-            alt={slide.headline}
-            className={`w-full h-full object-cover object-center grayscale-[25%] ${
-              idx === currentSlideIndex ? 'animate-kenburns' : ''
-            }`}
-            referrerPolicy="no-referrer"
-          />
-        </div>
-      ))}
+      {/* Background video (slides below still rotate the headline/text) */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 z-0 w-full h-full object-cover object-center pointer-events-none"
+        src={HERO_VIDEO_SRC}
+        poster={HERO_VIDEO_POSTER}
+        autoPlay={!reduceMotion}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        tabIndex={-1}
+        disablePictureInPicture
+      />
       <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/75 via-black/35 to-black/10" />
       <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-black/10 to-black/40" />
 
@@ -149,7 +174,6 @@ export const OmbaraHero: React.FC<OmbaraHeroProps> = ({ onRegisterClick, onExplo
                 </button>
               ))}
             </div>
-            <span className="font-mono text-xs text-white/70 tabular-nums">{currentSlide.number}</span>
             <div className="flex items-center gap-2">
               <button
                 onClick={handlePrev}
